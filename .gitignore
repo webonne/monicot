@@ -1,1 +1,3 @@
 .walkthrough/
+__pycache__/
+*.pyc
