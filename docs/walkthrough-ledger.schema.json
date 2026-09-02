@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Walkthrough Claim Ledger",
+  "type": "object",
+  "required": ["review_id", "round", "scope", "brief_path", "budget", "claims"],
+  "properties": {
+    "review_id": { "type": "string" },
+    "round": { "type": "integer", "minimum": 1, "maximum": 2 },
+    "status": { "type": "string", "enum": ["in_progress", "complete", "partial"] },
+    "scope": {
+      "type": "object",
+      "required": ["files", "lenses"],
+      "properties": {
+        "base": { "type": ["string", "null"] },
+        "head": { "type": ["string", "null"] },
+        "files": { "type": "array", "items": { "type": "string" } },
+        "test_command": { "type": ["string", "null"] },
+        "lenses": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["correctness", "security", "concurrency", "api-contract", "perf"] }
+        }
+      }
+    },
+    "brief_path": { "type": "string" },
+    "budget": {
+      "type": "object",
+      "required": ["max_rounds", "max_tool_calls", "used_tool_calls"],
+      "properties": {
+        "max_rounds": { "type": "integer" },
+        "max_tool_calls": { "type": "integer" },
+        "used_tool_calls": { "type": "integer" },
+        "max_claims_per_lens": { "type": "integer", "default": 8 }
+      }
+    },
+    "claims": { "type": "array", "items": { "$ref": "#/$defs/claim" } },
+    "dropped": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["lens", "title", "reason"],
+        "properties": {
+          "lens": { "type": "string" },
+          "title": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "coverage_gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["hotspot", "reason"],
+        "properties": { "hotspot": { "type": "string" }, "reason": { "type": "string" } }
+      }
+    },
+    "calibration": {
+      "type": "object",
+      "properties": {
+        "attacker": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "claims": { "type": "integer" },
+              "accepted": { "type": "integer" },
+              "precision": { "type": "number" }
+            }
+          }
+        },
+        "defender": {
+          "type": "object",
+          "properties": {
+            "refutes": { "type": "integer" },
+            "overturned_by_verifier": { "type": "integer" }
+          }
+        },
+        "verifier": {
+          "type": "object",
+          "properties": {
+            "assigned": { "type": "integer" },
+            "confirmed": { "type": "integer" },
+            "refuted": { "type": "integer" },
+            "inconclusive": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "injection_notes": { "type": "array", "items": { "type": "string" } }
+  },
+  "$defs": {
+    "claim": {
+      "type": "object",
+      "required": ["id", "round", "lens", "file", "line", "title", "failure_scenario", "severity", "confidence", "evidence"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^C-[0-9]{3,}$" },
+        "round": { "type": "integer" },
+        "lens": { "type": "string" },
+        "file": { "type": "string" },
+        "line": { "type": "integer", "minimum": 1 },
+        "title": { "type": "string" },
+        "failure_scenario": { "type": "string", "minLength": 20 },
+        "severity": { "type": "string", "enum": ["high", "medium", "low"] },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "evidence": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "merged_into": { "type": "string" },
+        "defense": {
+          "type": "object",
+          "required": ["verdict", "evidence"],
+          "properties": {
+            "verdict": { "type": "string", "enum": ["refute", "concede", "contest"] },
+            "evidence": { "type": "string" },
+            "refs": { "type": "array", "items": { "type": "string" } },
+            "related": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "verification": {
+          "type": "object",
+          "required": ["status"],
+          "properties": {
+            "status": { "type": "string", "enum": ["confirmed", "refuted", "inconclusive", "skipped"] },
+            "method": { "type": "string" },
+            "artifact": { "type": "string" },
+            "observed": { "type": "string" },
+            "severity_adjustment": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        },
+        "ruling": {
+          "type": "object",
+          "required": ["status", "rationale"],
+          "properties": {
+            "status": { "type": "string", "enum": ["accepted", "rejected", "needs_human"] },
+            "final_severity": { "type": "string", "enum": ["high", "medium", "low"] },
+            "unverified": { "type": "boolean" },
+            "rationale": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}
