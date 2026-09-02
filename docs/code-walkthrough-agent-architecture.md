@@ -274,13 +274,34 @@ brief 热点中没有被任何 claim 触及的部分，建议人工关注。
 
 ## 9. 实现方案
 
-### 方案 A：Claude Code 子 agent + skill（本仓库已落地骨架，推荐先跑通这个）
+### 方案 A：Claude Code agent 体（本仓库已落地，推荐先跑通这个）
 
-- `.claude/agents/walkthrough-{reader,attacker,defender,verifier,judge}.md`：5 个子 agent 定义，含工具白名单和 effort。
-- `.claude/skills/walkthrough/SKILL.md`：编排协议，用 `/walkthrough <target>` 触发。主会话按协议依次/并行调用 `Agent` 工具，维护 Ledger。
-- `docs/walkthrough-ledger.schema.json`：Ledger 的 JSON Schema，编排器每阶段校验用。
-- 验证员用 `isolation: worktree` 启动，天然隔离。
-- 优点：零基础设施、可交互调试、prompt 迭代快。缺点：依赖人开一个会话跑，不适合无人值守 CI。
+一个合格的 agent 体不只是 prompt。这里按「模型能决定的」和「模型不能决定的」分成四层：
+
+| 层 | 文件 | 作用 | 谁来保证 |
+|---|---|---|---|
+| **Agents** | `.claude/agents/walkthrough-{reader,attacker,defender,verifier,judge}.md` | 五个角色的 prompt、工具白名单、model、effort、验证员的 `isolation: worktree` | 模型按 prompt 行事 |
+| **Skills** | `.claude/skills/walkthrough/`（主编排）、`walkthrough-brief/`（只跑走读员）、`walkthrough-publish/`（发 PR review）、`walkthrough-calibrate/`（种子缺陷打分） | 多步流程按需加载；`walkthrough/scripts/` 是唯一写 Ledger 的途径（init / apply_phase / validate / finish） | 编排器按协议执行，脚本做 schema 校验 |
+| **Rules** | `.claude/rules/review-evidence.md`（全局证据标准）、`walkthrough-roles.md`（改 agent 体时的不变量，路径触发）、`walkthrough-artifacts.md`（产物目录规则，路径触发） | 每次会话都在上下文里的短规则；路径触发的只在碰到相关文件时加载 | 模型遵守，属于软约束 |
+| **Hooks** | `.claude/hooks/*.py`，在 `.claude/settings.json` 注册 | 确定性护栏，不管模型怎么想都会执行 | 客户端强制，属于硬约束 |
+
+Hooks 具体做了什么：
+
+| 事件 | 脚本 | 行为 |
+|---|---|---|
+| PreToolUse Bash | `guard_verifier_bash.py` | 验证员：拒绝 git push、联网、安装依赖、`reset --hard`、跳过测试 |
+| PreToolUse Write/Edit | `guard_verifier_write.py` | 验证员：只能新建测试或 repro 文件，不能改业务代码和已有测试 |
+| PreToolUse Write/Edit | `guard_ledger_write.py` | 任何人：`ledger.json` 和 `toolcalls.jsonl` 不允许直接编辑 |
+| PreToolUse Agent | `guard_agent_spawn.py` | 验证员必须带 `isolation: worktree`；走读子 agent 不能再派生子 agent |
+| PreToolUse / PostToolUse 全部 | `budget_gate.py` | 走读子 agent 每次调用计数到 `toolcalls.jsonl`；总预算或单 agent 预算耗尽时拒绝后续调用，要求立即输出结论 |
+| Stop | `stop_guard.py` | 走读进行中且没有 report.md 时，拦一次主 agent 的停止 |
+| SessionStart | `session_start.py` | 有未完成的走读时提示 `--resume` |
+
+子 agent 与 Ledger 的关系也因此收紧：**子 agent 不写 Ledger，甚至不写文件**（验证员只在自己的 worktree 里写复现）。它们把结果作为最终回复返回，编排器落盘到 `claims/`、`defense/`、`verify/`、`judge.json`，再用 `apply_phase.py` 并入。字段所有权靠脚本按阶段只写自己的字段来保证，不靠 prompt。
+
+一个已知限制：`isolation: worktree` 从默认分支创建，验证员必须先 `git checkout <head SHA>`，编排器负责把 SHA 传进去。
+
+优点：零基础设施、可交互调试、prompt 迭代快。缺点：依赖人开一个会话跑，不适合无人值守 CI。
 
 ### 方案 B：Claude Agent SDK（进 CI）
 
@@ -330,7 +351,7 @@ brief 热点中没有被任何 claim 触及的部分，建议人工关注。
 
 ## 12. 落地路线
 
-1. **第 1 周**：用本仓库骨架（方案 A）在 3–5 个真实 PR 上手动跑，只看走读简报和攻击方输出质量，调 prompt。
+1. **第 1 周**：用本仓库 agent 体（方案 A）在 3–5 个真实 PR 上手动跑，只看走读简报和攻击方输出质量，调 prompt。
 2. **第 2 周**：接入辩护和验证，建 10 个种子缺陷，跑出第一版精确率/召回率。
 3. **第 3 周**：加裁判和第二轮，做消融，确定默认镜头集和 effort。
 4. **第 4 周**：迁到方案 B，接 CI，报告以 PR review 形式发回；开始收集 👍/👎。

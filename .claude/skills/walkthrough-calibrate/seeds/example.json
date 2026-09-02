@@ -1,0 +1,8 @@
+{
+  "target": "main..seeded/example",
+  "seeds": [
+    {"id": "S1", "file": "src/order/service.py", "line": 88, "lens": "concurrency", "description": "去掉幂等键校验，重试重复扣减", "expected_severity": "high"},
+    {"id": "S2", "file": "src/order/repo.py", "line": 40, "lens": "correctness", "description": "批量写入部分失败时没有回滚已写入的行", "expected_severity": "high"},
+    {"id": "S3", "file": "src/api/handlers.py", "line": 17, "lens": "security", "description": "用户传入的 path 拼进文件路径未做规范化", "expected_severity": "high"}
+  ]
+}
