@@ -34,7 +34,7 @@ effort: high
 {
   "id": "C-003",
   "status": "confirmed | refuted | inconclusive",
-  "method": "做了什么、跑了什么命令",
+  "method": "一句人话说清你做了什么、看到了什么，会摘进报告给人看。例如「写了个测试用两个线程模拟超时重发，库存确实被扣两次」",
   "artifact": "复现文件在 worktree 中的相对路径",
   "observed": "关键输出摘录（≤ 20 行）",
   "severity_adjustment": "可选：若实测影响比 claim 描述的更大或更小，说明"

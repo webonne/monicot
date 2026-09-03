@@ -67,7 +67,7 @@ python3 $S/apply_phase.py --phase verify --input <review_dir>/verify/*.json
 
 ## Phase 5 裁决
 
-调用 `walkthrough-judge`，prompt 里给：brief 路径、ledger.json 路径、当前轮次。要求它返回两段：一段是 `judge.json` 的内容（rulings / coverage_gaps / calibration），一段是报告 Markdown。分别写到 `<review_dir>/judge.json` 和 `<review_dir>/report.md`，并入：
+调用 `walkthrough-judge`，prompt 里给：brief 路径、ledger.json 路径、当前轮次。要求它返回两段：一段是 `judge.json` 的内容（rulings / coverage_gaps / calibration），一段是给人看的报告 Markdown（大白话，不出现 claim/accepted/severity 这类内部词，格式见裁判 prompt）。分别写到 `<review_dir>/judge.json` 和 `<review_dir>/report.md`，并入：
 ```
 python3 $S/apply_phase.py --phase judge --input <review_dir>/judge.json
 ```
@@ -85,7 +85,7 @@ python3 $S/apply_phase.py --phase round2
 ```
 python3 $S/finish.py
 ```
-把 `report.md` 内容输出给用户，最后附 finish.py 的汇总。若目标是 PR 且用户要发评论，改用 `/walkthrough-publish <review_id> <pr>`。
+把 `report.md` 内容原样输出给用户。finish.py 的 JSON 汇总不要贴给用户，用一句话转述即可，例如「这次跑了 2 轮，提出 14 处疑点，最后 6 处需要改」。若目标是 PR 且用户要发评论，改用 `/walkthrough-publish <review_id> <pr>`。
 
 ## 中止
 
