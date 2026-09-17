@@ -179,15 +179,16 @@ button:active{filter:brightness(.92)}button:disabled{opacity:.5;cursor:not-allow
 .cost-work-table{border-top:2px solid var(--blue)}.cost-work-head,.cost-work-table>div:not(.cost-work-head){display:grid;grid-template-columns:350px 1.2fr 1fr;gap:32px;align-items:center}.cost-work-head{font-size:18px;color:var(--muted);padding:14px 17px;border-bottom:1px solid var(--line)}.cost-work-table>div:not(.cost-work-head){min-height:108px;padding:18px 17px;border-bottom:1px solid var(--line)}.cost-work-table strong{font-size:24px;line-height:1.45}.cost-work-table p{font-size:21px;line-height:1.5;margin:0;color:#53657b}.cost-work-table [data-operation-case=known]{background:#eaf0fb}.cost-work-table [data-operation-case=known] strong{color:var(--blue)}.recovery-and-cost{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:28px}.recovery-and-cost>div{border-top:1px solid var(--line);padding-top:15px}.recovery-and-cost span{display:block;font-size:18px;color:var(--muted);margin-bottom:9px}.recovery-and-cost strong{font-size:29px;color:var(--blue)}.recovery-and-cost p{font-size:19px;line-height:1.5;margin:9px 0 0;color:#53657b}.cost-measurement{font-size:17px;line-height:1.5;color:#69778a;margin:21px 0 0}
 .division-page h2{font-size:49px}.division-page .lead{font-size:23px}.division-page .query-steps{font-size:23px;gap:8px}.division-page .human-followup>strong{font-size:24px}.division-page .human-followup p{font-size:23px}.pain-summary .task-journey h3{font-size:29px}.cover-v140 .cover-context{font-size:22px}.cover-action-line{left:220px;right:220px;font-size:23px}.efficiency-closing h2{font-size:51px}
 
-.time-compare{display:grid;grid-template-columns:1fr 1.35fr;gap:32px;align-items:center;margin:8px 0 6px;padding:26px 30px;border:1px solid var(--line);border-radius:14px;background:#fff}
+.time-compare{display:grid;grid-template-columns:1fr 2fr;gap:32px;align-items:center;margin:8px 0 6px;padding:26px 30px;border:1px solid var(--line);border-radius:14px;background:#fff}
 .time-compare-head span{display:block;font-size:17px;color:var(--muted)}
 .time-compare-head strong{display:block;font-size:31px;margin:8px 0 10px;letter-spacing:-.02em;line-height:1.3}
 .time-compare-head small{display:block;font-size:17px;color:#53657b;line-height:1.5}
-.time-compare-cells{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.time-compare-cells{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.time-compare-cells em{display:block;font-style:normal;font-size:15px;color:var(--muted);margin-top:8px}
 .time-compare-cells>div{padding:20px 24px;border-radius:12px;background:#f1f4fa}
 .time-compare-cells>div.assist{background:#e5eefc}
-.time-compare-cells span{display:block;font-size:18px;color:var(--muted);min-height:54px}
-.time-compare-cells strong{display:block;font-size:64px;line-height:1.15;letter-spacing:-.04em;color:var(--ink)}
+.time-compare-cells span{display:block;font-size:18px;color:var(--muted);margin-bottom:6px}
+.time-compare-cells strong{display:block;font-size:56px;line-height:1.15;letter-spacing:-.04em;color:var(--ink)}
 .time-compare-cells .assist strong{color:var(--blue)}
 .time-compare-cells small{font-size:22px;margin-left:8px;letter-spacing:0;font-weight:500}
 </style>
@@ -288,11 +289,11 @@ button:active{filter:brightness(.92)}button:disabled{opacity:.5;cursor:not-allow
 <p class="eyebrow">04 / 能省什么</p><h2>减少排查耗时，为业务恢复争取时间</h2>
 <p class="lead">查数据、对时段、整理线索这些活交给助手，人把时间花在核实和恢复上。</p>
 <div class="time-compare">
- <div class="time-compare-head"><span>比的是哪一段</span><strong>收到问题 → 拿到可用线索</strong><small>同一个案例，人工和助手各跑一遍，掐表。</small></div>
- <div class="time-compare-cells"><div><span>人工：查接口、对时段、整理线索</span><strong>＿＿<small>分钟</small></strong></div><div class="assist"><span>助手：同一段活</span><strong>＿＿<small>秒</small></strong></div></div>
+ <div class="time-compare-head"><span>比的是哪一段</span><strong>收到问题 → 拿到可用线索</strong><small>同一个卡慢案例，三种做法。</small></div>
+ <div class="time-compare-cells"><div><span>人工翻日志</span><strong>15<small>分钟</small></strong><em>本案例实测</em></div><div><span>熟手用观测云</span><strong>5<small>分钟以上</small></strong><em>预计，还得等熟手有空</em></div><div class="assist"><span>用排障助手</span><strong>&lt;3<small>分钟</small></strong><em>本案例实测，不挑人</em></div></div>
 </div>
 <div class="division-results"><div><span>这次排障，助手已经给出的</span><strong>接口清单 · 前后时段对照 · 下一步建议</strong></div><button type="button" class="btn" data-jump="7">查看这次排障记录 ↗</button></div>
-<p class="source">排查时间和恢复时间分开算：能先恢复的先恢复，根因可以接着查。</p>
+<p class="source">翻日志和助手两栏是这个案例的实测，观测云熟手一栏是预计。排查时间和恢复时间分开算：能先恢复的先恢复，根因可以接着查。</p>
 <span class="version-stamp">v1.42</span><nav class="chapter-nav" aria-label="内容章节"><button type="button" class="chapter-item" data-chapter-jump="0"><span class="chapter-dot" aria-hidden="true"></span>为什么做</button><span class="chapter-arrow" aria-hidden="true">→</span><button type="button" class="chapter-item" data-chapter-jump="1"><span class="chapter-dot" aria-hidden="true"></span>怎么用</button><span class="chapter-arrow" aria-hidden="true">→</span><button type="button" class="chapter-item" data-chapter-jump="2"><span class="chapter-dot" aria-hidden="true"></span>提效点</button><span class="chapter-arrow" aria-hidden="true">→</span><button type="button" class="chapter-item" data-chapter-jump="3" aria-current="step"><span class="chapter-dot" aria-hidden="true"></span>能省什么</button></nav><footer class="chapter-footer"><div class="chapter-progress" aria-label="四段章节进度"><span class="chapter-segment" data-segment="0" style="flex:3" aria-label="为什么做：章节位置 100%"><i style="width:100.0000%"></i></span><span class="chapter-segment" data-segment="1" style="flex:6" aria-label="怎么用：章节位置 100%"><i style="width:100.0000%"></i></span><span class="chapter-segment" data-segment="2" style="flex:4" aria-label="提效点：章节位置 100%"><i style="width:100.0000%"></i></span><span class="chapter-segment" data-segment="3" style="flex:3" aria-label="能省什么：章节位置 33%"><i style="width:33.3333%"></i></span></div><span class="deck-position" aria-label="主讲第16页，共18页">16 / 18</span></footer></section>
 <section class="slide engineering-value-page" data-title="常见故障交给技术支持，降低研发重复投入">
 <p class="eyebrow">04 / 能省什么</p>
@@ -383,7 +384,7 @@ const notes=[
  "35秒。为什么强调全链路。只看节点日志，看到的是一台机器内部发生了什么，这很深，但拼不出一次请求的全程。加上观测云，我们能看请求经过了哪些服务、哪一段慢、哪个依赖出了问题、当时运行环境有没有变化。所以哪怕程序日志没写清原因，也能把范围缩小。这是在现有方案上多加一层视角，不是替代。［备答：和研发已有的日志方案什么关系？叠加不替代，节点日志看得深，我们看得宽。］",
  "40秒。这就是排障SOP知识飞轮。新问题先用观测数据查，找到并验证管用的恢复办法，写清什么情况能用、怎么操作、怎么检查，审核通过。技术支持遇到同类故障就照着用，用完把结果和不足反馈回来。说实话，现在分析问题、把查法写成SOP这两步，ITGW案例已经走过；验证恢复办法、交给支持复用，是下一阶段。",
  "30秒。要让技术支持接得住，SOP得真能执行：什么情况适用，动手前查什么，哪些操作有权限做，做完怎么确认恢复了，不行怎么退回去找研发。入口现在有两个已经在用的：企业微信里@一下，或者在平台里直接问。",
- "25秒。回到能省什么。查接口、对时段、整理线索这一段，现在是助手在做，人把时间花在核实和恢复上。我们要比的就是这一段：同一个案例，人工跑一遍、助手跑一遍，从收到问题到拿到可用线索各掐一次表。这个数我们今天回去就测，测出来填在这里。恢复业务的时间另外算，能先恢复的先恢复，根因可以接着查。［已经实测的话，直接报两个数，删掉“今天回去测”那句。］",
+ "25秒。回到能省什么。同一个卡慢案例，三种做法：人工翻日志，十五分钟；熟手用观测云，预计五分钟往上，而且得先等这个熟手有空；用排障助手，不到三分钟，谁问都一样。省的就是这一段，从收到问题到拿到可用线索。恢复业务的时间另外算，能先恢复的先恢复，根因可以接着查。［备答：P3说的10分钟以上是团队一般经验，这页是这个案例的对照，不矛盾。］",
  "35秒。再看投入怎么算。三类情况：还没办法的新问题，研发上；有成熟SOP的常见故障，技术支持按权限做、检查、记录；SOP不管用的，带着记录升级给研发。要看的就四个数：业务恢复用时、研发投入、技术支持完成率、整体成本。算成本的时候，支持的执行和SOP的维护也算进去，这样省下来的才是真的省了。",
  "20秒。最后把三个提效点收一下：观测云加智能排障，省的是人工查和对的时间；SOP持续积累，省的是同类故障重新摸索的时间；成熟SOP交给技术支持，省的是研发反复介入。一个目标：故障恢复更快，处理成本更低。谢谢大家。",
  "备用。这是另一份查询记录，二十个接口的耗时。技术支持拿到这个就知道先查哪几个。结果不全，原因也还没定。",
