@@ -1,0 +1,22 @@
+{
+  "version": "v1.46",
+  "name": "一分钟SOP讲解版",
+  "previousVersion": "v1.45",
+  "date": "2026-09-17",
+  "mainSlides": 18,
+  "appendixSlides": 16,
+  "defaultMinutes": 10,
+  "downloadFile": "IT智能排障助手-v1.46-精简包.zip",
+  "changes": [
+    "P10替换为一分钟新剪辑视频，正常速度播放",
+    "重新编写大白话旁白和字幕，明确历史录像与后续人工处理",
+    "保留播放兼容处理，新增旁白开关",
+    "同步P10讲稿、素材来源和节奏表；其他页面保留"
+  ],
+  "packageVariant": "精简包",
+  "compressionChanges": [
+    "一分钟视频720p，保留旁白和字幕，MP4/WebM两种格式",
+    "截图与海报无损转WebP，原分辨率和像素保持",
+    "去除未引用的旧视频及旧封面，保留34页内容"
+  ]
+}
